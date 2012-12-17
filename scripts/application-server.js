@@ -1,20 +1,25 @@
 var express = require('express'),
 	util = require('util'),
-	http = require('http'),
-  config = require('./config');
+	http = require('http');
 
-var Foursquare = require('node-foursquare-2')(config);
+var GooglePlaces = require('google-places');
+var places = new GooglePlaces('AIzaSyAICo5JmmmHgF9AtH6mTz0hdImT2PG2jXQ');
 
 var app = express();
-var options = {
-    host: 'www.panoramio.com',
-    path: '/map/get_panoramas.php?set=public&from=0&to=20&minx=1.284816&miny=103.852403&maxx=1.288816&maxy=103.856403&size=medium&mapfilter=true'
-};
+
 app.listen(3000);
 util.puts('Application Server running at http://localhost:3000/');
 
 app.get('/', function(req, res){
-
+  var array = new Array();
+  places.textSearch({query:'attractions in singapore', sensor: false},
+    function(err, response) {
+      array = response.results;
+      console.log(array[0].formatted_address);
+      console.log('search: ', JSON.stringify(response.results));
+      res.write(JSON.stringify(response.results));
+      res.end();
+    });
 });
 
 callback = function(response) {
@@ -31,6 +36,5 @@ callback = function(response) {
   });
 }
 
-http.request(options, callback).end();
 
 exports.app = app;

@@ -7,6 +7,6 @@
   },
   "dependencies": {
     "express": "3.x",
-    "foursquare": "git+ssh://git@github.com:roychoo/node-foursquare.git#master"
+    "googleplaces": "git+ssh://git@github.com:roychoo/node-google-places.git#master"
   }
 }
