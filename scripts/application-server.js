@@ -15,10 +15,18 @@ app.get('/', function(req, res){
   places.textSearch({query:'attractions in singapore', sensor: false},
     function(err, response) {
       array = response.results;
-      console.log(array[0].formatted_address);
-      console.log('search: ', JSON.stringify(response.results));
-      res.write(JSON.stringify(response.results));
-      res.end();
+          for(var item in response.headers) {
+    console.log(item + ": " + response.headers[item]);
+  }
+      //console.log(response.results);
+      console.log(array[0].photos[0].photo_reference);
+      //console.log('search: ', JSON.stringify(response.results));
+      places.getPhoto({photo_reference: array[0].photos[0].photo_reference, sensor: false, maxheight: 400}, function(error, response1){
+        console.log(response1.getHeader('location') + ' results');
+    
+        res.end();
+      });
+      
     });
 });
 
